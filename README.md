@@ -33,6 +33,11 @@ void myControlLoop() // run this at the controlLoopFrequency set at object creat
 }
 ```
 
+### Behaviors:
+* Output is always constrained to min and max saturation limits.
+* Propotional response is given control priority during dynamic adjustments.
+* Integral effect is dynamically clamped such that it will never be larger than the difference between the proportional response and the saturation limits.  This prevents integral wind-up and softly re-enables integral response as the controller recovers from strong disturbances and again nears steady state.
+
 ## Function List
 
 `PI_Controller( float Ka, float Kb, float loopFreq, float minSat, float maxSat );` -- Object creation
