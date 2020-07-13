@@ -70,3 +70,8 @@ float PI_Controller::update( float processVariable, float setPoint )
    //Serial.print(maxSaturation); Serial.print("\t");
    return output;
 }
+
+float PI_Controller::getOutput()
+{
+   return output;
+}

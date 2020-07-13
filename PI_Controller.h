@@ -36,6 +36,8 @@
 
          float update( float processVariable, float setPoint );
 
+         float getOutput();
+
       //private:
          float K_a;
          float K_b, integrator;
