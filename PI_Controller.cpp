@@ -21,27 +21,27 @@
 #include "PI_Controller.h"
 
 
-PI_Controller::PI_Controller( float Ka, float Kb, float loopFreq, float minSat, float maxSat )
+PI_Controller::PI_Controller( float K_a, float K_b, int loopFreq, float minSat, float maxSat )
 {
    output = 0;
    integrator = 0;
-   loopPeriod = 1.0f / loopFreq;
+   loopPeriod = 1.0f / float(loopFreq);
 
-   setKa( Ka );
-   setKb( Kb );
+   setKa( K_a );
+   setKb( K_b );
    setMinSaturation( minSat );
    setMaxSaturation( maxSat );
 }
 
 
-void PI_Controller::setKa(float Ka)
+void PI_Controller::setKa(float K_a)
 {
-   K_a = Ka;
+   Ka = K_a;
 }
 
 void PI_Controller::setKb(float Kb)
 {
-   K_b = Kb * loopPeriod;  // adjust integration constant for loop frequency
+   Kb_dt = Kb * loopPeriod;  // adjust integration constant for loop frequency
 }
 
 void PI_Controller::setMinSaturation(float minSat)
@@ -56,14 +56,15 @@ void PI_Controller::setMaxSaturation(float maxSat)
 
 float PI_Controller::update( float processVariable, float setPoint )
 {
+   // Serial PI controller
    float error = setPoint - processVariable;
-   float A = constrain( K_a * error, minSaturation, maxSaturation ); // prevent over saturation of proportional term
-   integrator += K_b * A;
-   integrator = constrain( integrator, minSaturation - A, maxSaturation - A ); // dynamically clamp integrator as proportional appoaches saturation
-   output = A + integrator;
+   float prop = constrain( Ka * error, minSaturation, maxSaturation ); // prevent over saturation of proportional term
+   integrator += Kb_dt * prop;
+   integrator = constrain( integrator, minSaturation - prop, maxSaturation - prop ); // dynamically clamp integrator as proportional appoaches saturation
+   output = prop + integrator;
    //Serial.print(processVariable); Serial.print("\t");
    //Serial.print(setPoint);        Serial.print("\t");
-   //Serial.print(A);               Serial.print("\t");
+   //Serial.print(prop);               Serial.print("\t");
    //Serial.print(integrator); Serial.print("\t");
    //Serial.print(output); Serial.print("\t");
    //Serial.print(minSaturation); Serial.print("\t");

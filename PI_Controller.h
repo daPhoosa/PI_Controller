@@ -27,7 +27,7 @@
    {
       public:
 
-         PI_Controller( float Ka, float Kb, float loopFreq, float minSat, float maxSat );
+         PI_Controller( float Ka, float Kb, int loopFreq, float minSat, float maxSat );
 
          void setKa( float Ka );
          void setKb( float Kb );
@@ -39,8 +39,8 @@
          float getOutput();
 
       //private:
-         float K_a;
-         float K_b, integrator;
+         float Ka;
+         float Kb_dt, integrator;
          float minSaturation, maxSaturation;
          float output; 
          float loopPeriod;
