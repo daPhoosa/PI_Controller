@@ -21,7 +21,9 @@
 #ifndef PI_Controller_h
    #define PI_Controller_h
 
-   #include <arduino.h>
+   #ifndef constrain
+      #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))  // from Arduino.h
+   #endif
 
    class PI_Controller
    {
@@ -34,7 +36,7 @@
          void setMinSaturation( float minSat );
          void setMaxSaturation( float maxSat );
 
-         float update( float processVariable, float setPoint );
+         float update( const float & processVariable, const float & setPoint );
 
          float getOutput();
 

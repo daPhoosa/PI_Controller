@@ -54,7 +54,7 @@ void PI_Controller::setMaxSaturation(float maxSat)
    maxSaturation = maxSat;
 }
 
-float PI_Controller::update( float processVariable, float setPoint )
+float PI_Controller::update( const float & processVariable, const float & setPoint )
 {
    // Serial PI controller
    float error = setPoint - processVariable;
@@ -62,13 +62,6 @@ float PI_Controller::update( float processVariable, float setPoint )
    integrator += Kb_dt * prop;
    integrator = constrain( integrator, minSaturation - prop, maxSaturation - prop ); // dynamically clamp integrator as proportional appoaches saturation
    output = prop + integrator;
-   //Serial.print(processVariable); Serial.print("\t");
-   //Serial.print(setPoint);        Serial.print("\t");
-   //Serial.print(prop);               Serial.print("\t");
-   //Serial.print(integrator); Serial.print("\t");
-   //Serial.print(output); Serial.print("\t");
-   //Serial.print(minSaturation); Serial.print("\t");
-   //Serial.print(maxSaturation); Serial.print("\t");
    return output;
 }
 
