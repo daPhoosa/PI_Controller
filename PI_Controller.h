@@ -25,6 +25,8 @@
 
  */
 
+#include <Arduino.h>
+
 
 #ifndef PI_Controller_h
    #define PI_Controller_h
@@ -36,7 +38,6 @@
    class PI_Controller
    {
       public:
-
          PI_Controller( float Ka, float Kb, int loopFreq, float minSat, float maxSat );
 
          void setKa( float Ka );
@@ -46,14 +47,14 @@
 
          float update( const float & processVariable, const float & setPoint );
 
-         float getOutput();
-
       private:
-         float Ka;
-         float Kb_dt, integrator;
+         float p_term, Ka;
+         float i_term, Kb_dt;
          float minSaturation, maxSaturation;
          float output; 
          float loopPeriod;
+
+         void displayPI();
    };
 
 #endif

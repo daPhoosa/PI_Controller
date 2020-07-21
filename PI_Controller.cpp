@@ -1,5 +1,5 @@
 /*
-      PI Controller
+      PI_Controller
 
       MIT License
 
@@ -32,8 +32,8 @@
 PI_Controller::PI_Controller( float K_a, float K_b, int loopFreq, float minSat, float maxSat )
 {
    output = 0;
-   integrator = 0;
-   loopPeriod = 1.0f / float(loopFreq);
+   i_term = 0;
+   loopPeriod = 1.0f / float( loopFreq );
 
    setKa( K_a );
    setKb( K_b );
@@ -42,38 +42,46 @@ PI_Controller::PI_Controller( float K_a, float K_b, int loopFreq, float minSat, 
 }
 
 
-void PI_Controller::setKa(float K_a)
+void PI_Controller::setKa( float K_a )
 {
    Ka = K_a;
 }
 
-void PI_Controller::setKb(float Kb)
+void PI_Controller::setKb( float Kb )
 {
    Kb_dt = Kb * loopPeriod;  // adjust integration constant for loop frequency
 }
 
-void PI_Controller::setMinSaturation(float minSat)
+void PI_Controller::setMinSaturation( float minSat )
 {
    minSaturation = minSat;
 }
 
-void PI_Controller::setMaxSaturation(float maxSat)
+void PI_Controller::setMaxSaturation( float maxSat )
 {
    maxSaturation = maxSat;
 }
 
 float PI_Controller::update( const float & processVariable, const float & setPoint )
 {
-   // Serial PI controller
    float error = setPoint - processVariable;
-   float prop = constrain( Ka * error, minSaturation, maxSaturation ); // prevent over saturation of proportional term
-   integrator += Kb_dt * prop;
-   integrator = constrain( integrator, minSaturation - prop, maxSaturation - prop ); // dynamically clamp integrator as proportional appoaches saturation
-   output = prop + integrator;
-   return output;
-}
 
-float PI_Controller::getOutput()
-{
-   return output;
+   float p_term = Ka * error;
+
+   if( p_term > maxSaturation )
+   {
+      i_term = 0;
+      return maxSaturation;
+   }
+   
+   if( p_term < minSaturation )
+   {
+      i_term = 0;
+      return minSaturation;
+   }
+
+   i_term += Kb_dt * p_term;
+   i_term = constrain( i_term, minSaturation - p_term, maxSaturation - p_term ); // dynamically clamp integrator as proportional appoaches saturation
+
+   return p_term + i_term;
 }
