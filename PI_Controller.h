@@ -54,7 +54,6 @@
          float output; 
          float loopPeriod;
 
-         void displayPI();
    };
 
 #endif
