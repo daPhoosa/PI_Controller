@@ -48,7 +48,7 @@
 
          float getOutput();
 
-      //private:
+      private:
          float Ka;
          float Kb_dt, integrator;
          float minSaturation, maxSaturation;
