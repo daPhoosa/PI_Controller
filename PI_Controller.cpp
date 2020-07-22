@@ -31,7 +31,6 @@
 
 PI_Controller::PI_Controller( float K_a, float K_b, int loopFreq, float minSat, float maxSat )
 {
-   output = 0;
    i_term = 0;
    loopPeriod = 1.0f / float( loopFreq );
 

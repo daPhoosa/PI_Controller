@@ -46,10 +46,9 @@
          float update( const float & processVariable, const float & setPoint );
 
       private:
-         float p_term, Ka;
+         float Ka;
          float i_term, Kb_dt;
          float minSaturation, maxSaturation;
-         float output; 
          float loopPeriod;
 
    };
