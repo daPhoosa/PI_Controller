@@ -25,8 +25,6 @@
 
  */
 
-#include <Arduino.h>
-
 
 #ifndef PI_Controller_h
    #define PI_Controller_h
