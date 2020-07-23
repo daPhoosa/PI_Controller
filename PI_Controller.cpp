@@ -63,9 +63,7 @@ void PI_Controller::setMaxSaturation( float maxSat )
 
 float PI_Controller::update( const float & processVariable, const float & setPoint )
 {
-   float error = setPoint - processVariable;
-
-   float p_term = Ka * error;
+   float p_term = Ka * ( setPoint - processVariable ); // Ka * error
 
    if( p_term > maxSaturation )
    {
